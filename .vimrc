@@ -54,6 +54,7 @@ set cmdheight=2
 
 " A buffer becomes hidden when it is abandoned
 set hid
+set hidden
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
@@ -110,6 +111,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'mattn/emmet-vim'
+Plugin 'kien/ctrlp.vim'
 
 
 call vundle#end()            
@@ -164,9 +166,9 @@ set expandtab
 " Be smart when using tabs ;)
 set smarttab
 
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+" 1 tab == 2 spaces
+set shiftwidth=2
+set tabstop=2
 
 " Linebreak on 500 characters
 set lbr
@@ -248,9 +250,6 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " Always show the status line
 set laststatus=2
 
-" Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
-
 augroup AutoWrite
     autocmd! BufLeave * :update
 augroup END
@@ -304,8 +303,6 @@ map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
-
-:imap <leader>e <Esc>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
@@ -383,6 +380,21 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
+if has("gui_running")
+  let g:airline_powerline_fonts = 1
+endif
+
 "Emmet settings
 imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+
+"Ctrl P settings
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+"NEERDtree settings
+"open tree when start
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+"toggle tree
+map <C-n> :NERDTreeToggle<CR>
 
